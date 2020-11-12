@@ -28,10 +28,14 @@ class Article(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     article_image = models.ImageField(upload_to = 'articles/' ,null=True)
 
+    def __str__(self):
+        return self.title
+
     @classmethod
     def todays_news(cls):
         today = dt.date.today()
         news = cls.objects.filter(pub_date__date = today)
+        print("today",today)
         return news
 
     @classmethod

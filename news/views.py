@@ -25,6 +25,7 @@ def convert_dates(dates):
     return day
 
 def past_days_news(request, past_date):
+    print("past_date", past_date)
     try:
         # Converts data from the string Url
         date = dt.datetime.strptime(past_date, '%Y-%m-%d').date()
@@ -42,6 +43,7 @@ def past_days_news(request, past_date):
 def news_today(request):
     date = dt.date.today()
     news = Article.todays_news()
+    print("new",news)
     return render(request, 'all-news/today-news.html', {"date": date,"news":news})
 
 def search_results(request):
