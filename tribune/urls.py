@@ -24,5 +24,5 @@ urlpatterns = [
     path('accounts/', include('registration.backends.simple.urls')),
     path('logout/', views.LogoutView.as_view(), {"next_page": '/'}), 
     path('tinymce/', include('tinymce.urls')),
-    path('api-token-auth/', obtain_auth_token)
+    path('api-token-auth/', obtain_auth_token),
 ]

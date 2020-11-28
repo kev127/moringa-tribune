@@ -16,18 +16,20 @@ from .permissions import IsAdminOrReadOnly
 
 
 class MerchList(APIView):
+    permission_classes = (IsAdminOrReadOnly,)
+
     def get(self, request, format=None):
         all_merch = MoringaMerch.objects.all()
         serializers = MerchSerializer(all_merch, many=True)
-        permission_classes = (IsAdminOrReadOnly,)
         return Response(serializers.data)
 
+    
     def post(self, request, format=None):
         serializers = MerchSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)   
 
 class MerchDescription(APIView):
     permission_classes = (IsAdminOrReadOnly,)
@@ -35,7 +37,7 @@ class MerchDescription(APIView):
         try:
             return MoringaMerch.objects.get(pk=pk)
         except MoringaMerch.DoesNotExist:
-            raise Http404
+            return Http404
 
     def get(self, request, pk, format=None):
         merch = self.get_merch(pk)
@@ -49,13 +51,12 @@ class MerchDescription(APIView):
             serializers.save()
             return Response(serializers.data)
         else:
-            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST) 
+    
     def delete(self, request, pk, format=None):
         merch = self.get_merch(pk)
         merch.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 # Create your views here.
 def welcome(request):
     return render(request, 'welcome.html')
